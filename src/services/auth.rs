@@ -47,7 +47,7 @@ const RSA_2048_PRIV_PEM: &str = include_str!("../../resources/private_key.pem");
 #[post("/auth/login")]
 async fn login(param: web::Json<LoginParam>, app: web::Data<app_data::AppGlobalData>) -> impl Responder {
     let rows: Vec<MSCoreUser> = sqlx::query_as::<_, MSCoreUser>(
-        "select id,  from ms_core_user where username = ? and password = ?"
+        "select * from ms_core_user where username = ? and password = ?"
     )
     .bind(&param.username)
     .bind(&param.password)
