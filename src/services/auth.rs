@@ -39,6 +39,7 @@ struct Token {
     create_at: Option<DateTime<Utc>>,
 }
 
+// 私钥签名
 const RSA_2048_PRIV_PEM: &str = include_str!("../../resources/private_key.pem");
 
 /**

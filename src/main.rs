@@ -29,7 +29,8 @@ async fn main() -> std::io::Result<()> {
         .connect(data_config.sqlx.url.as_str()).await.unwrap();
     
     let data = actix_web::web::Data::new(config::app_data::AppGlobalData {
-        pool
+        pool,
+        config: data_config.clone()
     });
 
     let server = HttpServer::new(move || {

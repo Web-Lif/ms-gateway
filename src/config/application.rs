@@ -1,14 +1,14 @@
 use serde::Deserialize;
 
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct SQLXConfig {
     pub url: String,
     pub max_connections: Option<u32>,
     pub min_connections: Option<u32>
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct Config {
     pub addr: String,
     pub port: Option<u16>,
