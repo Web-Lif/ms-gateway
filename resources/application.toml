@@ -1,0 +1,11 @@
+addr="127.0.0.1"
+port=8080
+
+[sqlx]
+# 数据库的 url 地址
+url="mysql://root:3013512e4e224dd0a999fc1e96a9e3c9@localhost:3306"
+# 最大连接数
+max_connections=10
+# 最小连接数
+min_connections=1
+
