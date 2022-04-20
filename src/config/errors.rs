@@ -13,7 +13,6 @@ impl error::ResponseError for Error {
         let rest = json!({
             "message": &self.message,
         });
-
         HttpResponse::build(self.status_code())
             .json(rest)
     }

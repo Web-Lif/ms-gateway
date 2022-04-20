@@ -67,6 +67,7 @@ async fn login(param: Option<web::Json<LoginParam>>, app: web::Data<app_data::Ap
         message: err.to_string()
     })?;
     if rows.len() > 0 {
+        
         let user = &rows[0];
         let key = RsaPrivateKey::from_pkcs8_pem(RSA_2048_PRIV_PEM).unwrap();
 
@@ -75,9 +76,11 @@ async fn login(param: Option<web::Json<LoginParam>>, app: web::Data<app_data::Ap
             username: user.username.clone(),
             email: user.email.clone(),
             create_at: Some(Utc::now())
-        }).map_err(|err| Error {
-            message: err.to_string()
-        })?;
+        }).map_err(|err| 
+            Error {
+                message: err.to_string()
+            }
+        )?;
     
         let mut hasher = Sha512::new();
         hasher.update(&token_str);

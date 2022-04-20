@@ -2,7 +2,7 @@ use actix_web::{middleware::{Logger}, web, App, HttpServer };
 use chrono::Local;
 use futures_util::future;
 use sqlx::mysql::MySqlPoolOptions;
-use log::{ info };
+use log::{ info};
 
 mod services;
 mod middleware;
