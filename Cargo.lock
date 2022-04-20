@@ -921,6 +921,7 @@ dependencies = [
  "actix-web",
  "base64",
  "chrono",
+ "derive_more",
  "env_logger",
  "futures-util",
  "lazy_static",

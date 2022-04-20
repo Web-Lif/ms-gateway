@@ -8,7 +8,7 @@ mod services;
 mod middleware;
 mod config;
 
-fn configure(cfg: &mut web::ServiceConfig) {
+fn cfg_fn(cfg: &mut web::ServiceConfig) {
     services::auth::configure(cfg);
 }
 
@@ -38,7 +38,7 @@ async fn main() -> std::io::Result<()> {
         .wrap(Logger::new("%a \"%r\" %s %b \"%{Referer}i\" %T"))
         .wrap(middleware::verify::VerifyToken)
         .app_data(data.clone())
-        .configure(configure)
+        .service(web::scope("/api").configure(cfg_fn))
     })
         .bind((data_config.addr.as_str(), data_config.port.unwrap()))?
         .run();

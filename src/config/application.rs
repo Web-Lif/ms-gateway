@@ -12,7 +12,8 @@ pub struct SQLXConfig {
 pub struct Config {
     pub addr: String,
     pub port: Option<u16>,
-    pub sqlx: SQLXConfig
+    pub sqlx: SQLXConfig,
+    pub ignore_matchers: Vec<String>
 }
 
 pub fn read_config () -> Config {

@@ -1,16 +1,13 @@
-use std::{future::{ready, Ready}};
-use actix_web::{
-    dev::{forward_ready, Service, ServiceRequest, ServiceResponse, Transform},
-    Error, HttpResponse, body::EitherBody
-};
+use std::future::{ready, Ready};
 
-use futures_util::future::{LocalBoxFuture};
-use serde::Serialize;
+use actix_web::body::EitherBody;
+use actix_web::dev::{self, ServiceRequest, ServiceResponse};
+use actix_web::dev::{Service, Transform};
+use actix_web::{http, Error, HttpResponse, web};
+use futures_util::future::LocalBoxFuture;
+use serde_json::json;
 
-#[derive(Serialize)]
-struct VerifyResponse {
-    message: String
-}
+use crate::config::app_data::AppGlobalData;
 
 pub struct VerifyToken;
 
@@ -30,7 +27,6 @@ where
         ready(Ok(VerifyTokenMiddleware { service }))
     }
 }
-
 pub struct VerifyTokenMiddleware<S> {
     service: S,
 }
@@ -45,26 +41,32 @@ where
     type Error = Error;
     type Future = LocalBoxFuture<'static, Result<Self::Response, Self::Error>>;
 
-    forward_ready!(service);
+    dev::forward_ready!(service);
 
-    fn call(&self, req: ServiceRequest) -> Self::Future {
-        let ms_token = req.headers().get("ms-token");
-        if ms_token.is_some() {
-            let response = self.service.call(req);
+    fn call(&self, request: ServiceRequest) -> Self::Future {
+        let ms_token = request.headers().get("ms-token");
+      
+        let data = request.app_data::<web::Data<AppGlobalData>>();
+        if ms_token.is_some() || (
+            data.is_some() &&
+            data.unwrap().config.ignore_matchers.contains(&request.path().to_string())
+        ) {
+            let res = self.service.call(request);
             return Box::pin(async move {
-                response.await.map(ServiceResponse::map_into_left_body)
+                Ok(res.await?.map_into_left_body())
             });
         }
-
-        let (request, _) = req.into_parts();
+        
+        let (request, _pl) = request.into_parts();
 
         let response = HttpResponse::Unauthorized()
-            .json(VerifyResponse {
-                message: "暂无权限访问".to_string(),
-            })
+            .json(json!({
+                "message": "There is currently no permission to access this API",
+            }))
             .map_into_right_body();
-    
+
         return Box::pin(async { Ok(ServiceResponse::new(request, response)) });
 
+      
     }
 }

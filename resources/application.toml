@@ -1,5 +1,8 @@
 addr="127.0.0.1"
 port=8080
+ignore_matchers = [
+    "/api/auth/login"
+]
 
 [sqlx]
 # 数据库的 url 地址
