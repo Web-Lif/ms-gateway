@@ -18,7 +18,7 @@ struct LoginParam {
 
 #[derive(sqlx::FromRow)]
 pub struct MSCoreUser {
-    pub id: i64,
+    pub id: String,
     pub username: String,
     pub password: String,
     pub email: String,
@@ -30,14 +30,16 @@ pub struct MSCoreUser {
 #[derive(Serialize)]
 struct Token {
     /** 用户 id */
-    id: i64,
+    id: String,
     /** 用户名 */
     username: String,
     /** 邮箱地址 */
     email: String,
+    /** 有效时间, 单位秒 */
+    effective: i16,
     /** 创建时间 */
     #[serde(with = "ts_seconds_option")]
-    create_at: Option<DateTime<Utc>>,
+    create_at: Option<DateTime<Utc>>
 }
 
 // 私钥签名地址
@@ -75,6 +77,7 @@ async fn login(param: Option<web::Json<LoginParam>>, app: web::Data<app_data::Ap
             id: user.id.clone(),
             username: user.username.clone(),
             email: user.email.clone(),
+            effective: 60,
             create_at: Some(Utc::now())
         }).map_err(|err| 
             Error {
