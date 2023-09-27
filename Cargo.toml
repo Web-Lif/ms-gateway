@@ -19,6 +19,6 @@ toml = "0.5.9"
 log = { version = "0.4.16", features = ["std"] }
 chrono = { version=  "0.4.19", features=["serde"] }
 lazy_static = "1.4.0"
-sha2 = "0.10.2"
+sha2 = "0.10.8"
 derive_more = "0.99.17"
 rs-snowflake = "0.6.0"
