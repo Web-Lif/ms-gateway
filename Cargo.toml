@@ -16,7 +16,7 @@ futures-util = "0.3.21"
 base64 = "0.13.0"
 rsa = "0.6.1"
 toml = "0.5.9"
-log = { version = "0.4.16", features = ["std"] }
+log = { version = "0.4.21", features = ["std"] }
 chrono = { version=  "0.4.19", features=["serde"] }
 lazy_static = "1.4.0"
 sha2 = "0.10.2"
