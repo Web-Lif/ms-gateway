@@ -13,7 +13,7 @@ serde_json = "1.0.79"
 sqlx = { version = "0.5.11", features = ["mysql", "runtime-actix-rustls", "chrono"] }
 env_logger = "0.9.0"
 futures-util = "0.3.21"
-base64 = "0.13.0"
+base64 = "0.22.0"
 rsa = "0.6.1"
 toml = "0.5.9"
 log = { version = "0.4.16", features = ["std"] }
